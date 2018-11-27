@@ -1,0 +1,183 @@
+import discord
+import json
+import urllib.request
+from discord.ext import commands
+from random import shuffle , randint
+
+bot = commands.Bot(command_prefix="$")
+token = 'NTA2NDY5NDY5MDE5OTYzNDIy.DrimBg.YhS-b8QTmk_DWUmW8qsit_oYREM'
+
+client = discord.Client()
+a = ['WEATHER' , 'WHAT' , 'HOW']
+
+#@client.event
+#async def on_message(message):
+ #   contents = message.content.split(" ")
+  #  if message.author == client.user:
+   #     return
+    #if message.content.startswith('$weather'):
+     #   await client.send_message(message.channel,'The weather is nice')
+def google (input):
+    url = 'https://en.wikipedia.org/wiki'
+    search_string = '/'
+    use_word = input
+    final1_string = url + search_string + use_word
+    return final1_string
+
+
+@bot.command()
+async def google_sea(arg):
+    var1 = ''
+    use_word = arg
+    string22 = 'This is your results: '
+    try:
+        var1 = google(use_word)
+        finast = string22 + str(var1)
+        await bot.say(finast)
+    except:
+        await bot.say("error!Type again")
+
+
+#these are the functions i call in my discord commands
+def temp_url(input: object) -> object:
+    main_url = 'http://api.apixu.com/v1/current.json'
+    api_key = '?key=dc42d220696a4172b65174631181611'
+    search_string = '&q='
+    location = input
+    final_string = main_url + api_key + search_string + location
+    return final_string
+
+#This function gives you the proper messages if the uv index is hight how you can protect yourself
+#It takes the input and with an if statement it sees how hight is it and prints the message
+def uv_warning(arg):
+    values = ' '
+    UV_index = arg
+    uv3 = 'You need sunglasses'
+    uv5 = uv3 + ' and a hat and you need to stay in shade'
+    uv11 = uv5 + '. Stay indoors between 10am - 4am'
+    if UV_index >= 3 and UV_index < 5:
+        values = uv3
+    if UV_index >= 5 and UV_index < 11:
+        values = uv5
+    if UV_index >= 11:
+        values = uv11
+    return values
+@bot.command()
+async def uv(arg):
+    var1 = ''
+    var2 = ''
+    location = arg
+    string22 = 'The UV index in ' + location + " is "
+
+    #in this part of the function the 'var1' takes the ciy name and puts it in the url
+    #after the 'var2' calls the function 'uv_index_func' with input the 'var1' so that it can collects the proper information from the url to print it to the user
+    #the same is happening for the above 'async' functions
+    try:
+        var1 = temp_url(location)
+        var2 = uv_index_func(var1)
+        final_string = string22 + str(var2)
+        await bot.say(final_string)
+    except:
+        await bot.say("This city doesn't exist!Try again")
+@bot.command()
+async def test(arg):
+    if arg == "how do you like it":
+
+        await bot.say("Slow and hard :)")
+    else:
+        await bot.say(arg)
+
+def current_weather(input):
+    url = input
+    response = urllib.request.urlopen(url).read()
+    json_obj = str(response, 'utf-8')
+    data = json.loads(json_obj)
+    #if you want the entire dictonary
+    #final = data
+    final = (data['current']['temp_c'])
+    return final
+def uv_index_func(input):
+    url = input
+    response = urllib.request.urlopen(url).read()
+    json_obj = str(response, 'utf-8')
+    data = json.loads(json_obj)
+    #if you want the entire dictonary
+    #final = data
+    final = (data['current']['uv'])
+    return final
+
+@bot.command()
+async def temp(arg):
+    var1 = ''
+    var2 = ''
+    location = arg
+    string22 = 'The temperature in ' + location + " is "
+    try:
+        var1 = temp_url(location)
+        var2 = current_weather(var1)
+        final_string = string22 + str(var2)
+        await bot.say(final_string)
+    except:
+        await bot.say("This city doesn't exist!Try again")
+
+
+
+@bot.command()
+async def ftemp(arg):
+    var1 = ''
+    var2 = ''
+    location = arg
+    string22 = 'The temperature in f ' + location + " is "
+    try:
+        var1 = temp_url(location)
+        var2 = tempf(var1)
+        final_string = string22 + str(var2)
+        await bot.say(final_string)
+    except:
+        await bot.say("This city doesn't exist!Try again")
+
+
+
+def tempf(input):
+    url = input
+    responce = urllib.request.urlopen(url).read()
+    json_obj = str(responce,'utf-8')
+    data = json.loads(json_obj)
+    final = (data['current']['temp_f'])
+    return final
+
+
+
+@bot.command()
+async def wind(arg):
+    var1 = ''
+    var2 = ''
+    location = arg
+    string22 = 'The wind in ' + location +  " is "
+    try:
+        var1 = temp_url(location)
+        var2 = wind_di(var1)
+        final_string = string22 + str(var2)
+        await bot.say(final_string)
+    except:
+        await bot.say("This city doesn't exist!Try again")
+
+def wind_di(input):
+    url= input
+    responce = urllib.request.urlopen(url).read()
+    json_obj = str(responce, 'utf-8')
+    data = json.loads(json_obj)
+    final = (data['current']['wind_mph'])
+    return final
+
+
+
+
+
+
+
+@bot.event
+async def on_ready():
+    print('ready')
+
+bot.run(token)
