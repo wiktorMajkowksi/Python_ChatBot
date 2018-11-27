@@ -29,13 +29,107 @@ def google (input):
 async def google_sea(arg):
     var1 = ''
     use_word = arg
-    string22 = 'This is your results: '
+    string22 =  'There is your result ' + location + ' '
     try:
         var1 = google(use_word)
         finast = string22 + str(var1)
         await bot.say(finast)
     except:
         await bot.say("error!Type again")
+
+@bot.command()
+async def google_temp(arg):
+    var1 = ''
+    var2 = ''
+    var3 = ''
+    var4 = ''
+    use_word = arg
+    location = arg
+    string22 =  'Also some information about ' + location + ' '
+    try:
+        var1 = google(use_word)
+        finast = string22 + str(var1)
+        var3 = temp_url(location)
+        var4 = current_weather(var3)
+        string2 = str('The temperature in ' + location + ' is ' + str(var4))
+
+        await bot.say(finast)
+        await bot.say(string2)
+
+    except:
+        await bot.say("error!Type again")
+
+@bot.command()
+async def google_tempf(arg):
+    var1 = ''
+    var2 = ''
+    var3 = ''
+    var4 = ''
+    use_word = arg
+    location = arg
+    string22 = 'This is your results'
+    try:
+        var1 = google(use_word)
+        finast = string22 + str(var1)
+        var3 = temp_url(location)
+        var4 = tempf(var3)
+        string2 = str('The temperature in f in ' + location + ' is ' + str(var4))
+
+        await bot.say(finast)
+        await bot.say(string2)
+    except:
+        await bot.say("error!Type again")
+
+
+@bot.command()
+async def google_uv(arg):
+    var1 = ''
+    var2 = ''
+    var3 = ''
+    var4 = ''
+    var5 = ''
+    use_word = arg
+    location = arg
+    string22 = 'Also some information about ' + location + ' '
+    try:
+        var1 = google(use_word)
+        finast = string22 + str(var1)
+        var3 = temp_url(location)
+        var4 =uv_index_func(var3)
+        var5 = uv_warning(var4)
+        string2 = str('The uv index in ' + location + ' is ' + str(var4) + str(var5))
+
+        await bot.say(finast)
+        await bot.say(string2)
+    except:
+        await bot.say("error!Type again")
+
+
+@bot.command()
+async def google_wind(arg):
+    var1 = ''
+    var2 = ''
+    var3 = ''
+    var4 = ''
+    use_word = arg
+    location = arg
+    string22 = 'Also some information about ' + location + ' '
+    try:
+        var1 = google(use_word)
+        finast = string22 + str(var1)
+        var3 = temp_url(location)
+        var4 =wind_di(var3)
+        string2 = str('The wind in ' + location + ' is ' + str(var4) )
+
+        await bot.say(finast)
+        await bot.say(string2)
+    except:
+        await bot.say("error!Type again")
+
+
+
+
+
 
 
 #these are the functions i call in my discord commands
