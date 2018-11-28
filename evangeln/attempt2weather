@@ -27,9 +27,9 @@ def google (input):
 
 @bot.command()
 async def google_sea(arg):
-    var1 = ''
     use_word = arg
-    string22 =  'There is your result ' + location + ' '
+    location = arg
+    string22 =  'There is your result ' + location
     try:
         var1 = google(use_word)
         finast = string22 + str(var1)
@@ -39,10 +39,6 @@ async def google_sea(arg):
 
 @bot.command()
 async def google_temp(arg):
-    var1 = ''
-    var2 = ''
-    var3 = ''
-    var4 = ''
     use_word = arg
     location = arg
     string22 =  'Also some information about ' + location + ' '
@@ -53,18 +49,14 @@ async def google_temp(arg):
         var4 = current_weather(var3)
         string2 = str('The temperature in ' + location + ' is ' + str(var4))
 
-        await bot.say(finast)
         await bot.say(string2)
+        await bot.say(finast)
 
     except:
         await bot.say("error!Type again")
 
 @bot.command()
 async def google_tempf(arg):
-    var1 = ''
-    var2 = ''
-    var3 = ''
-    var4 = ''
     use_word = arg
     location = arg
     string22 = 'This is your results'
@@ -75,19 +67,15 @@ async def google_tempf(arg):
         var4 = tempf(var3)
         string2 = str('The temperature in f in ' + location + ' is ' + str(var4))
 
-        await bot.say(finast)
         await bot.say(string2)
+        await bot.say(finast)
+
     except:
         await bot.say("error!Type again")
 
 
 @bot.command()
 async def google_uv(arg):
-    var1 = ''
-    var2 = ''
-    var3 = ''
-    var4 = ''
-    var5 = ''
     use_word = arg
     location = arg
     string22 = 'Also some information about ' + location + ' '
@@ -99,18 +87,14 @@ async def google_uv(arg):
         var5 = uv_warning(var4)
         string2 = str('The uv index in ' + location + ' is ' + str(var4) + str(var5))
 
-        await bot.say(finast)
         await bot.say(string2)
+        await bot.say(finast)
     except:
         await bot.say("error!Type again")
 
 
 @bot.command()
 async def google_wind(arg):
-    var1 = ''
-    var2 = ''
-    var3 = ''
-    var4 = ''
     use_word = arg
     location = arg
     string22 = 'Also some information about ' + location + ' '
@@ -121,8 +105,8 @@ async def google_wind(arg):
         var4 =wind_di(var3)
         string2 = str('The wind in ' + location + ' is ' + str(var4) )
 
-        await bot.say(finast)
         await bot.say(string2)
+        await bot.say(finast)
     except:
         await bot.say("error!Type again")
 
@@ -158,8 +142,6 @@ def uv_warning(arg):
     return values
 @bot.command()
 async def uv(arg):
-    var1 = ''
-    var2 = ''
     location = arg
     string22 = 'The UV index in ' + location + " is "
 
@@ -202,8 +184,6 @@ def uv_index_func(input):
 
 @bot.command()
 async def temp(arg):
-    var1 = ''
-    var2 = ''
     location = arg
     string22 = 'The temperature in ' + location + " is "
     try:
@@ -218,8 +198,6 @@ async def temp(arg):
 
 @bot.command()
 async def ftemp(arg):
-    var1 = ''
-    var2 = ''
     location = arg
     string22 = 'The temperature in f ' + location + " is "
     try:
@@ -244,8 +222,6 @@ def tempf(input):
 
 @bot.command()
 async def wind(arg):
-    var1 = ''
-    var2 = ''
     location = arg
     string22 = 'The wind in ' + location +  " is "
     try:
