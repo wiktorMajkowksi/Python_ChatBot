@@ -233,10 +233,6 @@ async def on_message(message):
         m1=message.content.split(" ")
         await client.send_message(message.channel,'`'+(" ".join(m1[1:]))+'`')
         
-    if message.content.upper().startswith('AWE') or message.content.upper().startswith('AW') or message.content.upper().startswith("AWW"):              
-        reply=["awe",
-        ":heart_eyes:"]
-        await client.send_message(message.channel,random.choice(reply))
     
     
     if message.content.upper().startswith('HI') or message.content.upper().startswith('HELLO') or message.content.upper().startswith('HEY') or message.content.upper().startswith('HEYY') :
@@ -259,25 +255,6 @@ async def on_message(message):
          
         await client.send_message(message.channel, '`' + random.choice(reply) + '`')    
         
-    if message.content.upper().startswith("YOU'RE BEAUTIFUL") or message.content.upper().startswith("YOU ARE BEAUTIFUL") or message.content.upper().startswith("YOU'RE SO HANDSOME") or message.content.upper().startswith("YOU ARE PRETTY") or message.content.upper().startswith("YOU'RE PRETTY"): 
-        reply=["You must be looking at a mirror.",
-          "Is that the best you’ve got?",
-          "Look who’s talking.",
-          "Well, that makes two of us!",
-          "Thanks, but I prefer to be noticed for my intellectual capacity.",
-          "Yeah, it’s my only redeeming quality.",
-          "Not this again...take a number and wait in line.",
-          "It’s extremely rare for me to hear that.",
-          "Oh stop it, you.",
-          "Awww...now I want to throw a rainbow at you.",
-          "What do you need?",
-          "Compliment accepted.",
-          "It must be the meds kicking in.",
-          "I know. Wish I could say the same about you.",
-          "Thanks, wanna get a room?"]
-        await client.send_message(message.channel,random.choice(reply))
-        await client.send_file(message.channel, 'robot.photo.jpg')
-        
 
     for word in contents:
         if word in thanks_list:
@@ -296,13 +273,7 @@ async def on_message(message):
           "I give up.",
           "42",]
         await client.send_message(message.channel, '`' + random.choice(reply) + '`')
-        
-    if message.content.upper().startswith("HAHA") or message.content.upper().startswith("HAH") or message.content.upper().startswith("HAHAH") or message.content=="ha":
-        reply=["I'm happy I made you laugh",
-          ":joy: :joy: :joy:",
-          ":wink:",
-          ":sweat_drops: :sweat_drops: :peach:"]
-        await client.send_message(message.channel,random.choice(reply)) 
+       
     
     
     if message.content.upper().startswith("DAVE?") or message.content.upper().startswith("DAVE") or message.content.upper().startswith("DAV") or message.content.upper().startswith("DAV?"):
@@ -340,11 +311,7 @@ async def on_message(message):
           "No."]
         await client.send_message(message.channel,'`' + random.choice(reply) + '`')
         
-    if message.content.upper().startswith("LET'S") or message.content.upper().startswith("LETS"):
-        reply=["Hell no", 
-          "Hell yes",
-          "I'm down"]
-        await client.send_message(message.channel, random.choice(reply))
+   
         
         
         
