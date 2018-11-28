@@ -29,7 +29,7 @@ def google (input):
 async def google_sea(arg):
     use_word = arg
     location = arg
-    string22 =  'There is your result ' + location
+    string22 =  'There is your result about ' + location + ' '
     try:
         var1 = google(use_word)
         finast = string22 + str(var1)
