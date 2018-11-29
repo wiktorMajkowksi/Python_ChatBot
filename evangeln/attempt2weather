@@ -2,21 +2,16 @@ import discord
 import json
 import urllib.request
 from discord.ext import commands
-from random import shuffle , randint
+
 
 bot = commands.Bot(command_prefix="$")
 token = 'NTA2NDY5NDY5MDE5OTYzNDIy.DrimBg.YhS-b8QTmk_DWUmW8qsit_oYREM'
 
-client = discord.Client()
-a = ['WEATHER' , 'WHAT' , 'HOW']
 
-#@client.event
-#async def on_message(message):
- #   contents = message.content.split(" ")
-  #  if message.author == client.user:
-   #     return
-    #if message.content.startswith('$weather'):
-     #   await client.send_message(message.channel,'The weather is nice')
+
+
+#First API for google wikipedia
+#this function is for the API for wikipedia google search
 def google (input):
     url = 'https://en.wikipedia.org/wiki'
     search_string = '/'
@@ -24,7 +19,7 @@ def google (input):
     final1_string = url + search_string + use_word
     return final1_string
 
-
+#this comand uses the funcion above and it's suppose to give to the user the information for the the word that the user types
 @bot.command()
 async def google_sea(arg):
     use_word = arg
@@ -37,6 +32,8 @@ async def google_sea(arg):
     except:
         await bot.say("error!Type again")
 
+#Combination of the two API's
+#the command below it takes the user's input and output the temperature of the town or city that the user types and also some extra inforamtion about the input
 @bot.command()
 async def google_temp(arg):
     use_word = arg
@@ -55,17 +52,18 @@ async def google_temp(arg):
     except:
         await bot.say("error!Type again")
 
+#the command below gives to the user the temperature in Fahrenheit and also some extra information for the user's input
 @bot.command()
 async def google_tempf(arg):
     use_word = arg
     location = arg
-    string22 = 'This is your results'
+    string22 = 'Also some information about ' + location + ' '
     try:
         var1 = google(use_word)
         finast = string22 + str(var1)
         var3 = temp_url(location)
         var4 = tempf(var3)
-        string2 = str('The temperature in f in ' + location + ' is ' + str(var4))
+        string2 = str('The temperature in Fahrenheit in ' + location + ' is ' + str(var4))
 
         await bot.say(string2)
         await bot.say(finast)
@@ -74,6 +72,7 @@ async def google_tempf(arg):
         await bot.say("error!Type again")
 
 
+#The command below gives the uv index and also some information for the user's input
 @bot.command()
 async def google_uv(arg):
     use_word = arg
@@ -93,6 +92,7 @@ async def google_uv(arg):
         await bot.say("error!Type again")
 
 
+#the command below gives to the user the wind  and also some information about the user's input
 @bot.command()
 async def google_wind(arg):
     use_word = arg
@@ -116,7 +116,8 @@ async def google_wind(arg):
 
 
 
-#these are the functions i call in my discord commands
+#second API
+#the function below it is suppose to take the the city/town that the user input's and gives the main url that the information will come from so that the bot can show
 def temp_url(input: object) -> object:
     main_url = 'http://api.apixu.com/v1/current.json'
     api_key = '?key=dc42d220696a4172b65174631181611'
@@ -151,18 +152,13 @@ async def uv(arg):
     try:
         var1 = temp_url(location)
         var2 = uv_index_func(var1)
-        final_string = string22 + str(var2)
+        var3 = uv_warning(var2)
+        final_string = string22 + str(var2) + var3
         await bot.say(final_string)
     except:
         await bot.say("This city doesn't exist!Try again")
-@bot.command()
-async def test(arg):
-    if arg == "how do you like it":
 
-        await bot.say("Slow and hard :)")
-    else:
-        await bot.say(arg)
-
+#the two functions below they take the city/town/country that the user input and they take from the API dictionary the exact information that we want
 def current_weather(input):
     url = input
     response = urllib.request.urlopen(url).read()
@@ -182,6 +178,7 @@ def uv_index_func(input):
     final = (data['current']['uv'])
     return final
 
+#gives the temperature of the location that the user want's
 @bot.command()
 async def temp(arg):
     location = arg
@@ -191,20 +188,23 @@ async def temp(arg):
         var2 = current_weather(var1)
         final_string = string22 + str(var2)
         await bot.say(final_string)
+   #if the location that the user input does not exist it will come up with an error
     except:
         await bot.say("This city doesn't exist!Try again")
 
 
 
+#gives the temperature in Fahrenheit of the location that the user want's
 @bot.command()
 async def ftemp(arg):
     location = arg
-    string22 = 'The temperature in f ' + location + " is "
+    string22 = 'The temperature in Fahrenheit in ' + location + " is "
     try:
         var1 = temp_url(location)
         var2 = tempf(var1)
         final_string = string22 + str(var2)
         await bot.say(final_string)
+    # if the location that the user input does not exist it will come up with an error
     except:
         await bot.say("This city doesn't exist!Try again")
 
@@ -220,6 +220,7 @@ def tempf(input):
 
 
 
+#gives the wind of the location that the user want's
 @bot.command()
 async def wind(arg):
     location = arg
