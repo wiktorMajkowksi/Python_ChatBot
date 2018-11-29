@@ -22,9 +22,9 @@ client = Bot(command_prefix=BOT_PREFIX)
 async def hello():
     await client.say("Hello!")
 
-@client.command(aliases = ["sweets", "Dessert"])  #Works
+@client.command(aliases = ["sweets", "Dessert"])
 async def dessert():
-    await client.say("What would you like to eat for your desert?"
+    await client.say("What would you like to eat for your desert?"          #This line asks the user which option they want to choose
                      "\n"
                      "\n" "I can offer you the following:"
                      "\n" "1)  Ice-cream: £2 (add an extra scoop for 50p)."
@@ -59,8 +59,8 @@ async def dessert():
                          "\n" "c) Blueberries"
                          "\n" "d) Oranges")
 
-@client.command()   #Works (not mine)
-async def bitcoin():
+@client.command()   #This code I obtained from this website ---> https://www.devdungeon.com/content/make-discord-bot-python-part-2
+async def bitcoin():        #(It is the code that helped me to understand how to use API's)
     url = 'https://api.coindesk.com/v1/bpi/currentprice/BTC.json'
     async with aiohttp.ClientSession() as session:
         raw_response = await session.get(url)
@@ -70,59 +70,55 @@ async def bitcoin():
 
 @client.command()   #Works
 async def weather():
-    url = "http://api.worldweatheronline.com/premium/v1/weather.ashx?key=487189a4845348a2844131423181211&q=London&format=json&num_of_days=1"
-    output1 = requests.get(url)
-    ans = output1.json()['data']['weather'][0]['hourly'][7]['tempC']
+    url = "http://api.worldweatheronline.com/premium/v1/weather.ashx?key=487189a4845348a2844131423181211&q=London&format=json&num_of_days=1"    #This is a weather API that I found
+    output1 = requests.get(url) #This requests and gets the API link above
+    ans = output1.json()['data']['weather'][0]['hourly'][7]['tempC']    #This filters through the API in order to get the information that is required
     await client.say("The temperature tomorrow in London will be:  %s °C" % ans)
 
-@client.command()    #Works (partly)
-async def google():
-    url = "https://www.google.com/search?ei=EMjyW7G-NMaagQbP2qmYCw&q={}".format(input)
+@client.command()    #This code conducts a google search
+async def google(a):
+    url = "https://www.google.com/search?ei=EMjyW7G-NMaagQbP2qmYCw&q={}".format(a)
     new = 2
     webbrowser.open(url, new=new)
-    await client.say(url)
+    await client.say("This is link might be useful for query: " + url)
 
-@client.command(aliases= ["nav", "Nav", "NAV", ])
+@client.command(aliases= ["nav", "Nav", "NAV", ])   #This code is the navigation code
 async def where_c(o, d):
-    endpoint = "https://maps.googleapis.com/maps/api/directions/json?"  # This is the base of the link that api we need will be build on
-    key = "AIzaSyCjxBL-51EMWIs35JegWcQ8Q5Y8MmpA_ww"
-    origin =  o.replace(" ", "+")
-    destination = d.replace(" ", "+")
-    nav_request = "origin={}&destination={}&key={}".format(origin, destination, key)  # Here I have formated the origin, destination and the key using the variables that I have created above.
-    request = endpoint + nav_request
-    response = urllib.request.urlopen(request).read()  # This line uses a urllib.request to read the Api that we have requested.
-    str_response = response.decode('utf-8')  # This line is responsible for decoding the data from the Api
-    directions = json.loads(str_response)
-    routes = directions["routes"]
-    legs = routes[0]["legs"]
-    legs2 = legs[0]["steps"]
-    a = len(legs2) - 1
-    x = 0
-    if a >= x:
-        while a >= x:
-            timeForJourney = legs[0]["duration"]["text"]
-            c = legs[0]["steps"][x]["distance"]["text"]
-            b = legs[0]["steps"][x]["html_instructions"]
-            endSTR = (str(x + 1) + ") " + (re.sub("<b>|</b>|</div>|<div|style=\"font-size:0.9em\">", "", b)) + ". For: " + c) # re.sub allows me to remove more than one character from the string
-            await client.say(endSTR)
-            x = x + 1
-            if x == legs[0]["steps"]:
-                await client.say("The estimated time for your journey is: " + timeForJourney)
-    else:
-        await client.say("I didn't catch that, could you repeat?")
+    try:
+        endpoint = "https://maps.googleapis.com/maps/api/directions/json?"  # This is the base of the link that api we need will be build on
+        key = "AIzaSyCjxBL-51EMWIs35JegWcQ8Q5Y8MmpA_ww"
+        nav_request = "origin={}&destination={}&key={}".format(o, d, key)  # Here I have formated the origin, destination and the key using the variables that I have created above.
+        request = endpoint + nav_request
+        response = urllib.request.urlopen(request).read()  # This line uses a urllib.request to read the Api that we have requested.
+        str_response = response.decode('utf-8')  # This line is responsible for decoding the data from the Api
+        directions = json.loads(str_response)
+        routes = directions["routes"]
+        legs = routes[0]["legs"]
+        legs2 = legs[0]["steps"]
+        a = len(legs2) - 1
+        x = 0
+        if a >= x:
+            while a >= x:
+                c = legs[0]["steps"][x]["distance"]["text"]
+                b = legs[0]["steps"][x]["html_instructions"]
+                endSTR = (str(x + 1) + ") " + (re.sub("<b>|</b>|</div>|<div|style=\"font-size:0.9em\">", "", b)) + ". For: " + c) # re.sub allows me to remove more than one character from the string
+                await client.say(endSTR)
+                x = x + 1
+    finally:
+            await client.say("Sorry I don't know those locations. Try different ones, maybe I will be able to help with them.")
 
 @client.event
 async def on_ready():
-    await client.change_presence(game=Game (name="You"))
+    await client.change_presence(game=Game (name="with You!"))
     print("Logged in as " + client.user.name)
 
 @asyncio.coroutine
 async def list_servers():
     await client.wait_until_ready()
-    while not client.is_closed:
+    while not client.is_closed:     #this is code is ran when the user is not active
         print("Current servers: general")
         for server in client.servers:
             print(server.name)
-        await asyncio.sleep(100)
+            await asyncio.sleep(100)    #This code prints the server that the bot is on recursively until the user interacts with chatbot.
 client.loop.create_task(list_servers())
 client.run("NTA2NDkxOTY5Njg2NDcwNjU3.Dr4Lvw.mJ0_I5DHwbr5fMzDaZt9SHuzT1k")
