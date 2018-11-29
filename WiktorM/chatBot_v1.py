@@ -1,4 +1,4 @@
-#deserts
+#desserts
 def everything():
 	desertInput = ("ice-cream", "cake", "fruits", "nothing")
 	desertOutput = ("What flavour would you like?")
