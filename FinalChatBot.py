@@ -8,7 +8,7 @@ import requests
 
 #####       ANA imports       ########
 import discord
-from googlesearch import search
+#from googlesearch import search
 import random
 
 #########################################
@@ -93,7 +93,7 @@ async def bitcoin():        #(It is the code that helped me to understand how to
         response = json.loads(response)
         await client.say("Bitcoin price is: $" + response['bpi']['USD']['rate'])
 
-@client.command()   #This code shows a weather forecast for tomorrow
+@client.command()   #This code will show weather forecast for tomorrow
 async def weather():
     url = "http://api.worldweatheronline.com/premium/v1/weather.ashx?key=487189a4845348a2844131423181211&q=London&format=json&num_of_days=1"    #This is a weather API that I found
     output1 = requests.get(url) #This requests and gets the API link above
@@ -109,28 +109,28 @@ async def google(a):
 
 @client.command(aliases= ["nav", "Nav", "NAV", ])   #This code is the navigation code
 async def where_c(o, d):
-    try:
-        endpoint = "https://maps.googleapis.com/maps/api/directions/json?"  # This is the base of the link that api we need will be build on
-        key = "AIzaSyCjxBL-51EMWIs35JegWcQ8Q5Y8MmpA_ww"
-        nav_request = "origin={}&destination={}&key={}".format(o, d, key)  # Here I have formated the origin, destination and the key using the variables that I have created above.
-        request = endpoint + nav_request
-        response = urllib.request.urlopen(request).read()  # This line uses a urllib.request to read the Api that we have requested.
-        str_response = response.decode('utf-8')  # This line is responsible for decoding the data from the Api
-        directions = json.loads(str_response)
-        routes = directions["routes"]
-        legs = routes[0]["legs"]
-        legs2 = legs[0]["steps"]
-        a = len(legs2) - 1
-        x = 0
-        if a >= x:
-            while a >= x:
-                c = legs[0]["steps"][x]["distance"]["text"]
-                b = legs[0]["steps"][x]["html_instructions"]
-                endSTR = (str(x + 1) + ") " + (re.sub("<b>|</b>|</div>|<div|style=\"font-size:0.9em\">", "", b)) + ". For: " + c) # re.sub allows me to remove more than one character from the string
-                await client.say(endSTR)
-                x = x + 1
-    finally:
-            await client.say("Sorry I don't know those locations. Try different ones, maybe I will be able to help with them.")
+    endpoint = "https://maps.googleapis.com/maps/api/directions/json?"  # This is the base of the link that api we need will be build on
+    key = "AIzaSyCjxBL-51EMWIs35JegWcQ8Q5Y8MmpA_ww"
+    nav_request = "origin={}&destination={}&key={}".format(o, d, key)  # Here I have formated the origin, destination and the key using the variables that I have created above.
+    request = endpoint + nav_request
+    print(request)
+    response = urllib.request.urlopen(request).read()  # This line uses a urllib.request to read the Api that we have requested.
+    str_response = response.decode('utf-8')  # This line is responsible for decoding the data from the Api
+    directions = json.loads(str_response)
+    routes = directions["routes"]
+    legs = routes[0]["legs"]
+    legs2 = legs[0]["steps"]
+    a = len(legs2) - 1
+    x = 0
+    if a >= x:
+        while a >= x:
+            c = legs[0]["steps"][x]["distance"]["text"]
+            b = legs[0]["steps"][x]["html_instructions"]
+            endSTR = (str(x + 1) + ") " + (re.sub("<b>|</b>|</div>|<div|style=\"font-size:0.9em\">", "", b)) + ". For: " + c) # re.sub allows me to remove more than one character from the string
+            await client.say(endSTR)
+            x = x + 1
+    #finally:
+     #       await client.say("Sorry I don't know those locations. Try different ones, maybe I will be able to help with them.")
 
 @client.event
 async def on_ready():
@@ -146,61 +146,62 @@ async def list_servers():
             print(server.name)
             await asyncio.sleep(100)    #This code prints the server that the bot is on recursively until the user interacts with chatbot.
 
+
 #######         ANA CODE            #######
 
-@client.async_event
+@client.event
 @asyncio.coroutine
-def on_message(message):
+async def on_message(message):
     author = message.author
     if message.content.startswith('!welcome'):
         print('on_message !welcome')
         Greetings = ["`Hi`", "`Hey`", "`Hi there`", "`Hello`", "`I am glad! You are talking to me`"]
-        yield from welcome(author, message)
-        yield from message.channel.send(random.choice(Greetings))
+        await welcome(author, message)
+        await message.channel.send(random.choice(Greetings))
 
     if message.content.startswith('!food'):
         print('on_message !food')
-        yield from food(message)
+        await food(message)
 
     if message.content.startswith('!fastfood'):
         print('on_message !fastfood')
-        yield from fastfood(message)
+        await fastfood(message)
 
     if message.content.startswith('!restaurant'):
         print('on_message !restaurant')
-        yield from restaurant(message)
+        await restaurant(message)
 
     if message.content.startswith('!coventryfastfood'):
         print('on_message !coventry')
         Covfood = "Fastfood in Coventry"
         for url in search(Covfood, tld='com', lang='en', num=3, start=1, stop=2):
-            yield from message.channel.send(url)
+            await message.channel.send(url)
     if message.content.startswith('!birminghamfastfood'):
         print('on_message !birminghamfastfood')
         Birfood = "Fastfood in Birmingham"
         for url in search(Birfood, tld='com', lang='en', num=3, start=1, stop=2):
-            yield from message.channel.send(url)
+            await message.channel.send(url)
     if message.content.startswith('!londonfastfood'):
         print('on_message !londonfastfood')
         Lonfood = "Fastfood in London"
         for url in search(Lonfood, tld='com', lang='en', num=3, start=1, stop=2):
-            yield from message.channel.send(url)
+            await message.channel.send(url)
 
     if message.content.startswith('!coventryrestaurant'):
         print('on_message !coventryrestaurant')
         CovRest = "Restaurants in Coventry"
         for url in search(CovRest, tld='com', lang='en', num=3, start=1, stop=2):
-            yield from message.channel.send(url)
+            await message.channel.send(url)
     if message.content.startswith('!birminghamrestaurant'):
         print('on_message !birminghamrestaurant')
         BirRest = "Restaurants in Birmingham"
         for url in search(BirRest, tld='com', lang='en', num=3, start=1, stop=2):
-            yield from message.channel.send(url)
+            await message.channel.send(url)
     if message.content.startswith('!londonrestaurant'):
         print('on_message !londonrestaurant')
         LonRest = "Restaurants in London"
         for url in search(LonRest, tld='com', lang='en', num=3, start=1, stop=2):
-            yield from message.channel.send(url)
+            await message.channel.send(url)
 
     if message.content.upper() == "CS":
         cs_jokes = ("Why do programmers wear glasses? They can't C#",
@@ -209,8 +210,8 @@ def on_message(message):
                     "01010111011010000111100100100000011001000110100101100100001000000111010001101000011001010010000001100011011010000110100101100011011010110110010101101110001000000110001101110010011011110111001101110011001000000111010001101000011001010010000001110010011011110110000101100100001111110010000001010100010011110010000001000111010001010101010000100000010101000100111100100000010101000100100001000101001000000100111101010100010010000100010101010010001000000101001101001001010001000100010100100000010110010100000100100000010001000100100101010000010100110100100001001001010101000010000100100001",
                     "There are 10 types of people in the world - those who understand binary, and those who don't.",
                     "Real programmers count from 0.")
-        yield from message.channel.send(random.choice(cs_jokes))
-
+        await message.channel.send(random.choice(cs_jokes))
+    await client.process_commands(message)
 
 # run on my terminal for testing purpose
 @client.event
@@ -223,7 +224,6 @@ async def on_ready():
 @asyncio.coroutine
 def welcome(author, message):
     print('testing welcome')
-
 
 def food(message):
     print('testing food')
@@ -245,18 +245,8 @@ def restaurant(message):
 
 ###########         IOANA CODE              ####################
 
-@client.event
-async def on_ready():
-    print('Bot is ready')
-    print('Logged in as')
-    print(client.user.name)
-    print(client.user.id)
-    print('------')
-    await client.change_presence(game=discord.Game(name=" with fire "))
-
-
-commandList = ["?date", "?time", "?say", "?google", "?help", "?rating", "?news"]
-newsCategories = ["?business", "?sports", "?entertainment", "?general", "?health", "?science", "?technology"]
+commandList = ["!date", "!time", "!say", "!google", "!help", "!rating", "!news"]
+newsCategories = ["!business", "!sports", "!entertainment", "!general", "!health", "!science", "!technology"]
 thanks_list = ['thank', 'thanks', 'thx']
 
 
@@ -312,12 +302,12 @@ async def on_message(message):
 
     # ------Looking for commands---------------------------------------------------"""
 
-    if message.content.startswith('?'):
-        if message.content in commandList or message.content in newsCategories or '?google' in message.content or '?say' in message.content:
+    if message.content.startswith('!'):
+        if message.content in commandList or message.content in newsCategories or '!google' in message.content or '!say' in message.content:
             pass
         else:
             await client.send_message(message.channel,
-                                      "__`Sorry, I didn't catch that. For things I can help you with, type '?help'.`__")
+                                      "__`Sorry, I didn't catch that. For things I can help you with, type '!help'.`__")
 
     # -------------------------------------------------------------------------------"""
     # --------Google ----------------------------------------------------------------"""
@@ -325,7 +315,7 @@ async def on_message(message):
     # https://pypi.org/project/beautifulsoup4/
     # And also, this code is not written by me
 
-    if message.content.lower().startswith("?google"):
+    if message.content.lower().startswith("!google"):
         url = message.content.lower()
         url = url[8:]
 
@@ -340,13 +330,13 @@ async def on_message(message):
     # To understand how to work with time in python I used this:
     # https://www.techatbloomberg.com/blog/work-dates-time-python/
 
-    if message.content == '?time':
+    if message.content == '!time':
         url = "http://worldtimeapi.org/api/timezone/Europe/London.txt"
         datetime = dt.datetime.now().isoformat()
         reply = datetime[11:16]
         await client.send_message(message.channel, ':small_blue_diamond: `Here is the time: ' + reply + '`')
 
-    if message.content == '?date':
+    if message.content == '!date':
         datetime = dt.datetime.now().isoformat()
         day = datetime[8:10]
         month = datetime[5:7]
@@ -357,7 +347,7 @@ async def on_message(message):
 
     # -----End of Date&Time-------------------------------------------------------"""
 
-    if message.content == "?help":
+    if message.content == "!help":
         reply1 = "Hello {0.author.mention}".format(message)
         reply2 = "This are the commands that you can use at the moment(most of them are self explanatory):"
         reply3 = ":small_blue_diamond: Use '?google' for a quick google search."
@@ -377,9 +367,9 @@ async def on_message(message):
     # (For example, the country, the keyword, which is noted by 'q', and also the category)
     # This information can be found here: https://newsapi.org/docs/endpoints/top-headlines
 
-    if message.content == '?news':
+    if message.content == '!news':
         reply1 = "Please choose a category: business, sports, entertainment, general, science, health, technology."
-        reply2 = "Don't forget to use '?' before."
+        reply2 = "Don't forget to use '!' before."
         reply3 = "If you're searching for a specific topic, then just type '!' and then your keyword. "
         await client.send_message(message.channel,
                                   '`' + reply1 + '\n' + reply2 + '`' + ':blush:' + '\n' + '`' + reply3 + '`')
@@ -579,7 +569,7 @@ async def on_message(message):
                  "Hell yes",
                  "I'm down"]
         await client.send_message(message.channel, random.choice(reply))
-
+    await client.process_commands(message)
 
 ########################################################################
 
@@ -597,7 +587,7 @@ def google (input):
     return final1_string
 
 #this comand uses the funcion above and it's suppose to give to the user the information for the the word that the user types
-@bot.command()
+@client.command()
 async def google_sea(arg):
     use_word = arg
     location = arg
@@ -605,13 +595,13 @@ async def google_sea(arg):
     try:
         var1 = google(use_word)
         finast = string22 + str(var1)
-        await bot.say(finast)
+        await client.say(finast)
     except:
-        await bot.say("error!Type again")
+        await client.say("error!Type again")
 
 #Combination of the two API's
 #the command below it takes the user's input and output the temperature of the town or city that the user types and also some extra inforamtion about the input
-@bot.command()
+@client.command()
 async def google_temp(arg):
     use_word = arg
     location = arg
@@ -623,14 +613,14 @@ async def google_temp(arg):
         var4 = current_weather(var3)
         string2 = str('The temperature in ' + location + ' is ' + str(var4))
 
-        await bot.say(string2)
-        await bot.say(finast)
+        await client.say(string2)
+        await client.say(finast)
 
     except:
-        await bot.say("error!Type again")
+        await client.say("error!Type again")
 
 #the command below gives to the user the temperature in Fahrenheit and also some extra information for the user's input
-@bot.command()
+@client.command()
 async def google_tempf(arg):
     use_word = arg
     location = arg
@@ -642,15 +632,15 @@ async def google_tempf(arg):
         var4 = tempf(var3)
         string2 = str('The temperature in Fahrenheit in ' + location + ' is ' + str(var4))
 
-        await bot.say(string2)
-        await bot.say(finast)
+        await client.say(string2)
+        await client.say(finast)
 
     except:
-        await bot.say("error!Type again")
+        await client.say("error!Type again")
 
 
 #The command below gives the uv index and also some information for the user's input
-@bot.command()
+@client.command()
 async def google_uv(arg):
     use_word = arg
     location = arg
@@ -663,14 +653,14 @@ async def google_uv(arg):
         var5 = uv_warning(var4)
         string2 = str('The uv index in ' + location + ' is ' + str(var4) + str(var5))
 
-        await bot.say(string2)
-        await bot.say(finast)
+        await client.say(string2)
+        await client.say(finast)
     except:
-        await bot.say("error!Type again")
+        await client.say("error!Type again")
 
 
 #the command below gives to the user the wind  and also some information about the user's input
-@bot.command()
+@client.command()
 async def google_wind(arg):
     use_word = arg
     location = arg
@@ -682,10 +672,10 @@ async def google_wind(arg):
         var4 =wind_di(var3)
         string2 = str('The wind in ' + location + ' is ' + str(var4) )
 
-        await bot.say(string2)
-        await bot.say(finast)
+        await client.say(string2)
+        await client.say(finast)
     except:
-        await bot.say("error!Type again")
+        await client.say("error!Type again")
 
 
 
@@ -718,7 +708,7 @@ def uv_warning(arg):
     if UV_index >= 11:
         values = uv11
     return values
-@bot.command()
+@client.command()
 async def uv(arg):
     location = arg
     string22 = 'The UV index in ' + location + " is "
@@ -731,9 +721,9 @@ async def uv(arg):
         var2 = uv_index_func(var1)
         var3 = uv_warning(var2)
         final_string = string22 + str(var2) + var3
-        await bot.say(final_string)
+        await client.say(final_string)
     except:
-        await bot.say("This city doesn't exist!Try again")
+        await client.say("This city doesn't exist!Try again")
 
 #the two functions below they take the city/town/country that the user input and they take from the API dictionary the exact information that we want
 def current_weather(input):
@@ -756,7 +746,7 @@ def uv_index_func(input):
     return final
 
 #gives the temperature of the location that the user want's
-@bot.command()
+@client.command()
 async def temp(arg):
     location = arg
     string22 = 'The temperature in ' + location + " is "
@@ -764,15 +754,15 @@ async def temp(arg):
         var1 = temp_url(location)
         var2 = current_weather(var1)
         final_string = string22 + str(var2)
-        await bot.say(final_string)
+        await client.say(final_string)
    #if the location that the user input does not exist it will come up with an error
     except:
-        await bot.say("This city doesn't exist!Try again")
+        await client.say("This city doesn't exist!Try again")
 
 
 
 #gives the temperature in Fahrenheit of the location that the user want's
-@bot.command()
+@client.command()
 async def ftemp(arg):
     location = arg
     string22 = 'The temperature in Fahrenheit in ' + location + " is "
@@ -780,10 +770,10 @@ async def ftemp(arg):
         var1 = temp_url(location)
         var2 = tempf(var1)
         final_string = string22 + str(var2)
-        await bot.say(final_string)
+        await client.say(final_string)
     # if the location that the user input does not exist it will come up with an error
     except:
-        await bot.say("This city doesn't exist!Try again")
+        await client.say("This city doesn't exist!Try again")
 
 
 
@@ -798,7 +788,7 @@ def tempf(input):
 
 
 #gives the wind of the location that the user want's
-@bot.command()
+@client.command()
 async def wind(arg):
     location = arg
     string22 = 'The wind in ' + location +  " is "
@@ -806,9 +796,9 @@ async def wind(arg):
         var1 = temp_url(location)
         var2 = wind_di(var1)
         final_string = string22 + str(var2)
-        await bot.say(final_string)
+        await client.say(final_string)
     except:
-        await bot.say("This city doesn't exist!Try again")
+        await client.say("This city doesn't exist!Try again")
 
 def wind_di(input):
     url= input
