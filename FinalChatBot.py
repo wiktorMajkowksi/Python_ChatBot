@@ -93,7 +93,7 @@ async def bitcoin():        #(It is the code that helped me to understand how to
         response = json.loads(response)
         await client.say("Bitcoin price is: $" + response['bpi']['USD']['rate'])
 
-@client.command()   #Works
+@client.command()   #This code shows a weather forecast for tomorrow
 async def weather():
     url = "http://api.worldweatheronline.com/premium/v1/weather.ashx?key=487189a4845348a2844131423181211&q=London&format=json&num_of_days=1"    #This is a weather API that I found
     output1 = requests.get(url) #This requests and gets the API link above
